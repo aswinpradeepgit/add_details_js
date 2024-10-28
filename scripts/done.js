@@ -78,6 +78,30 @@ function deleteRowHtml(button) {
   row.parentNode.removeChild(row);
 }
 
+function editRowHtml(btn) {
+  var row = btn.parentNode.parentNode; 
+  var nameCell = row.cells[0];
+  var ageCell = row.cells[1];
+
+  // If cells are already editable, save the changes
+  if (nameCell.isContentEditable) {
+      // Save the changes and change button text to "Edit"
+      nameCell.contentEditable = false;
+      ageCell.contentEditable = false;
+      btn.innerHTML = "Edit"; 
+      nameCell.classList.remove('editable'); 
+      ageCell.classList.remove('editable');
+  } else {
+      // Make cells editable
+      nameCell.contentEditable = true;
+      ageCell.contentEditable = true;
+      nameCell.classList.add('editable'); 
+      ageCell.classList.add('editable');
+      btn.innerHTML = "Save"; 
+      nameCell.focus(); // Focus on the Name cell
+  }
+}
+
 function initDummyTable() {
     updateTable(detailsDummyArray, '#dataTable'); 
 }

@@ -72,8 +72,14 @@ function deleteRow(dataArray, index) {
     updateTable(dataArray, dataArray === detailsAddArray ? '#detailsTable' : '#dataTable'); 
 }
 
+function deleteRowHtml(button) {
+  // Find the row containing the button and remove it
+  const row = button.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+}
+
 function initDummyTable() {
     updateTable(detailsDummyArray, '#dataTable'); 
 }
 
-initDummyTable();
+//initDummyTable();

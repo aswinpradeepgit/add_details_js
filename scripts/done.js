@@ -31,6 +31,8 @@ function addToArray() {
     // Clear input fields after adding
     nameInput.value = '';
     ageInput.value = '';
+
+    console.log(detailsAddArray)
 }
 
 function updateTable(dataArray, tableId) {
@@ -41,19 +43,37 @@ function updateTable(dataArray, tableId) {
         const person = dataArray[i];
         const row = document.createElement('tr');
 
+        // Index Cell
         const indexCell = document.createElement('td');
-        indexCell.textContent = i + 1; 
+        indexCell.textContent = i + 1;
         row.appendChild(indexCell);
 
+        // Name Cell
         const nameCell = document.createElement('td');
         nameCell.textContent = person.name;
+        nameCell.className = 'name-cell';
         row.appendChild(nameCell);
 
+        // Age Cell
         const ageCell = document.createElement('td');
         ageCell.textContent = person.age;
+        ageCell.className = 'age-cell';
         row.appendChild(ageCell);
 
+        // Action Cell
         const actionCell = document.createElement('td');
+
+        // Edit Button
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.style.marginRight = '8px';
+        editButton.className = 'edit-button';
+        editButton.onclick = function() {
+            toggleEditMode(dataArray, i, nameCell, ageCell, editButton);
+        };
+        actionCell.appendChild(editButton);
+
+        // Delete Button
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.className = 'delete-button';
@@ -61,9 +81,9 @@ function updateTable(dataArray, tableId) {
             deleteRow(dataArray, i);
         };
         actionCell.appendChild(deleteButton);
-        row.appendChild(actionCell);
 
-        tableBody.appendChild(row); 
+        row.appendChild(actionCell);
+        tableBody.appendChild(row);
     }
 }
 
@@ -100,6 +120,31 @@ function editRowHtml(btn) {
       btn.innerHTML = "Save"; 
       nameCell.focus(); // Focus on the Name cell
   }
+}
+
+function toggleEditMode(dataArray, index, nameCell, ageCell, editButton) {
+    if (nameCell.isContentEditable && ageCell.isContentEditable) {
+        // Save the edited data
+        dataArray[index].name = nameCell.textContent;
+        dataArray[index].age = Number(ageCell.textContent);
+
+        // Make cells non-editable and update button text to "Edit"
+        nameCell.contentEditable = false;
+        ageCell.contentEditable = false;
+        editButton.textContent = 'Edit';
+
+        // Refresh the table to reflect saved changes
+        updateTable(dataArray, '#detailsTable');
+        console.log(detailsAddArray);
+    } else {
+        // Make cells editable
+        nameCell.contentEditable = true;
+        ageCell.contentEditable = true;
+        nameCell.focus(); // Focus on the Name cell
+        editButton.textContent = 'Save'; // Change button text to "Save"
+        
+    }
+    
 }
 
 function initDummyTable() {
